@@ -17,3 +17,6 @@ cd reddit && bundle install
 
 # START
 puma -d
+
+# CHECK
+ps aux | grep puma

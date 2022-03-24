@@ -17,3 +17,6 @@ sudo systemctl start mongod
 
 # AUTOSTART
 sudo systemctl enable mongod
+
+# CHECK
+sudo systemctl status mongod
