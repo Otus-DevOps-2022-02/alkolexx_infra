@@ -1,29 +1,55 @@
-# **HOME-WORK-03 - CLOUD-TESTAPP**
+# **HOME-WORK-05 - PACKER-BASE**
 
-- Создаем ВМ через YANDEX CLOUD CLI.
-Команда для создания следующая:
+- Создаем шаблон `ubuntu16.json`.
+- Создаем файл переменных `variables.json.exmaples`, добавляя в него дополнительные параметры - количество CPU, размер RAM, размер HDD и другие.
+- Так как Packer выдавал ошибку при установке пакетов, то изменяем следующие параметры в скриптах `install_ruby.sh` и `install_mongodb.sh`:
+`apt update` на `apt-get update`
+`apt install` на `apt-get install`
+Вставляем следующие команды сразу после `apt-get update`:
 ```
-$ yc compute instance create \
---name reddit-app \
---hostname reddit-app \
---memory=4 \
---create-boot-disk image-folder-id=standard-images,image-family=ubuntu-1604-lts,size=10GB \
---network-interface subnet-name=default-ru-central1-a,nat-ip-version=ipv4 \
---metadata serial-port-enable=1 \
---ssh-key ~/.ssh/appuser.pub
+sudo rm /var/lib/apt/lists/lock
+sudo rm /var/cache/apt/archives/lock
+sudo rm /var/lib/dpkg/lock
+sudo rm /var/lib/dpkg/lock-frontend
 ```
-
----
-- Пишем скрипты установки необходимого софта - `install_ruby.sh`,`install_mongodb.sh`,`deploy.sh`
 
 ---
-- Проверяем доступность поссылке: [http://51.250.68.137:9292](http://51.250.68.137:9292)
+- Проверяем корректность `*.json`:
+```
+alkolexx@NOTE:~$ packer validate -var-file=variables.json.examples ./ubuntu16.json
+The configuration is valid.
+```
+- Запускаем сборку:
+```
+alkolexx@NOTE:~$ packer build -var-file=variables.json.examples ./ubuntu16.json
+yandex: output will be in this color.
 
----
-- Данные для подключения:
+==> yandex: Creating temporary RSA SSH key for instance...
+==> yandex: Using as source image: fd8b6brrvf4ovk98vkdf (name: "ubuntu-16-04-lts-v20220314", family: "ubuntu-1604-lts")
+==> yandex: Creating network...
+==> yandex: Creating subnet in zone "ru-central1-a"...
+==> yandex: Creating disk...
+==> yandex: Creating instance...
+....
+==> yandex: Stopping instance...
+==> yandex: Deleting instance...
+    yandex: Instance has been deleted!
+==> yandex: Creating image: reddit-base-1648307000
+==> yandex: Waiting for image to complete...
+==> yandex: Success image create...
+==> yandex: Destroying subnet...
+    yandex: Subnet has been deleted!
+==> yandex: Destroying network...
+    yandex: Network has been deleted!
+==> yandex: Destroying boot disk...
+    yandex: Disk has been deleted!
+Build 'yandex' finished after 3 minutes 39 seconds.
+
+==> Wait completed after 3 minutes 39 seconds
+
+==> Builds finished. The artifacts of successful builds are:
+--> yandex: A disk image was created: reddit-base-1648307000 (id: kdy69li3167j344pej9a) with family name reddit-base
 ```
-bastion_IP = 51.250.64.135
-someinternalhost_IP = 10.128.0.17
-testapp_IP = 51.250.68.137
-testapp_port = 9292
-```
+- Образ успешно создан. Найти его можно в `YC - Compute Cloud - Образы`
+- Создаем ВМ из полученного образа `Compute Clou - Создать ВМ - Выбор образа/загрузочного диска - Пользовательские - Выбрать - Образ - Применить`
+- Следуем инструкции, разворачиваем REDDIT и проверяем доступной по внешнему адресу.
