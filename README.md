@@ -1,7 +1,7 @@
 # **HOME-WORK-05 - PACKER-BASE**
 
 - Создаем шаблон `ubuntu16.json`.
-- Создаем файл переменных `variables.json.exmaples`, добавляя в него дополнительные параметры - количество CPU, размер RAM, размер HDD и другие.
+- Создаем файл переменных `variables.json.exmaple`, добавляя в него дополнительные параметры - количество CPU, размер RAM, размер HDD и другие.
 - Так как Packer выдавал ошибку при установке пакетов, то изменяем следующие параметры в скриптах `install_ruby.sh` и `install_mongodb.sh`:
 `apt update` на `apt-get update`
 `apt install` на `apt-get install`
@@ -16,12 +16,12 @@ sudo rm /var/lib/dpkg/lock-frontend
 ---
 - Проверяем корректность `*.json`:
 ```
-alkolexx@NOTE:~$ packer validate -var-file=variables.json.examples ./ubuntu16.json
+alkolexx@NOTE:~$ packer validate -var-file=variables.json.example ./ubuntu16.json
 The configuration is valid.
 ```
 - Запускаем сборку:
 ```
-alkolexx@NOTE:~$ packer build -var-file=variables.json.examples ./ubuntu16.json
+alkolexx@NOTE:~$ packer build -var-file=variables.json.example ./ubuntu16.json
 yandex: output will be in this color.
 
 ==> yandex: Creating temporary RSA SSH key for instance...
