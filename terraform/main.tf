@@ -15,7 +15,7 @@ provider "yandex" {
 }
 
 resource "yandex_compute_instance" "app" {
-  name        = "reddit-app"
+  name        = var.yc_instance_name
   zone        = var.zone
   platform_id = "standard-v1"
 
