@@ -1,0 +1,7 @@
+cloud_id                 = "fake"
+folder_id                = "fake"
+zone                     = "ru-central1-a"
+service_account_key_file = "key.json"
+bucket_name              = "alkolexx-bucket"
+bucket_key               = "fake"
+bucket_secret            = "fake"
