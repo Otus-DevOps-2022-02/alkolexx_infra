@@ -1,0 +1,13 @@
+---
+- name: APPS INSTALL ON APP SERVER
+  hosts: all
+  become: true
+  tasks:
+  - name: install apps
+    apt:
+      name:
+      - ruby-full
+      - ruby-bundler
+      - build-essential
+      state: present
+      update_cache: yes
