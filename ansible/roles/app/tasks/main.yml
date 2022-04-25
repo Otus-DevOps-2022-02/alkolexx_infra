@@ -1,11 +1,4 @@
 ---
-- name: Configure APP
-  hosts: app
-  become: true
-  vars:
-    db_host: 192.168.10.28
-
-  tasks:
   - name: Add unit file for Puma
     copy:
       src: files/puma.service
@@ -20,7 +13,6 @@
   - name: enable puma
     systemd: name=puma enabled=yes
 
-  handlers:
-  - name: reload puma
-    become: true
-    systemd: name=puma state=restarted
+  - name: Show info about the env this host belongs to
+    debug:
+      msg: "This host is in {{ env }} environment!!!"
